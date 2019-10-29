@@ -1,0 +1,15 @@
+{
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": {
+    "member-access": false,
+    "no-console": false,
+    "ordered-imports": false,
+    "curly": false,
+    "no-bitwise": false,
+    "interface-name": false,
+    "ban-types": false,
+    "no-namespace": false,
+    "object-literal-sort-keys": false,
+    "no-string-literal": false
+  }
+}

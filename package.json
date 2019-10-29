@@ -1,0 +1,52 @@
+{
+  "name": "ann-music-mode",
+  "version": "1.0.0",
+  "description": "Mode methods for @ann-music-js project",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "test": "jest --config jestconfig.json --passWithNoTests",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "echo ",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladansaracpv/ann-music-mode.git"
+  },
+  "keywords": [
+    "Music",
+    "Library",
+    "Typescript"
+  ],
+  "author": "KB13",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vladansaracpv/ann-music-mode/issues"
+  },
+  "homepage": "https://github.com/vladansaracpv/ann-music-mode#readme",
+  "devDependencies": {
+    "ts-jest": "^24.0.2",
+    "@types/jest": "^24.0.19",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "ann-music-chord": "^1.0.0",
+    "ann-music-interval": "^1.0.1",
+    "ann-music-note": "^1.0.6",
+    "ann-music-pc": "^1.0.1",
+    "ann-music-scale": "^1.0.0"
+  }
+}
