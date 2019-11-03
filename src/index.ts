@@ -1,8 +1,10 @@
-import { Scale, ScaleName, ScaleNameTokens } from 'ann-music-scale';
+import { Note, NoteName, NoteMidi } from 'ann-music-note';
 import { Chord, CHORD } from 'ann-music-chord';
+import { Scale, ScaleTypeName, ScaleNameTokens } from 'ann-music-scale';
 import { chromaToIntervals, EmptySet, PcsetProps, modes as chromaModes } from 'ann-music-pc';
 import { IntervalName } from 'ann-music-interval';
-import { Note, NoteName, NoteMidi } from 'ann-music-note';
+
+export type ScaleInit = ScaleTypeName | ScaleNameTokens;
 
 export type ModeNumber = number;
 export type ModeName = string;
@@ -11,6 +13,7 @@ export type ModeFifths = number;
 export type ModeTriad = string;
 export type ModeSeventh = string;
 export type ModeAlias = string;
+
 export interface Mode extends PcsetProps {
   readonly intervals: IntervalName[];
   readonly modeNum: number;
@@ -35,21 +38,21 @@ const DATA: ModeDefinition[] = [
 
 const NoMode: Mode = {
   ...EmptySet,
-  aliases: [],
-  alt: 0,
   intervals: [],
-  modeNum: NaN,
   name: '',
-  seventh: '',
+  modeNum: NaN,
+  alt: 0,
   triad: '',
+  seventh: '',
+  aliases: [],
 };
 
 const all: Mode[] = DATA.map(toMode);
 const index: Record<string, Mode> = {};
-all.forEach(scaleMode => {
-  index[scaleMode.name] = scaleMode;
-  scaleMode.aliases.forEach(alias => {
-    index[alias] = scaleMode;
+all.forEach(cmode => {
+  index[mode.name] = cmode;
+  cmode.aliases.forEach(alias => {
+    index[alias] = cmode;
   });
 });
 
@@ -88,26 +91,26 @@ export function entries() {
   return all.slice();
 }
 
-function toMode(scaleMode: ModeDefinition): Mode {
+function toMode(modeDef: ModeDefinition): Mode {
   // type ModeDefinition = [ModePcSet, ModeFifths, ModeName, ModeTriad, ModeSeventh, ModeAlias?];
   // [2906, 3, 'aeolian', 'm', 'm7', 'minor'],
 
-  const [modeNum, setNum, alt, name, triad, seventh, alias] = scaleMode;
+  const [modeNum, setNum, alt, name, triad, seventh, alias] = modeDef;
   const aliases = alias ? [alias] : [];
   const chroma = Number(setNum).toString(2);
   const intervals = chromaToIntervals(chroma);
   return {
-    aliases,
-    alt,
-    chroma,
     empty: false,
     intervals,
     modeNum: +modeNum,
-    name,
+    chroma,
     normalized: chroma,
+    name,
     setNum,
-    seventh,
+    alt,
     triad,
+    seventh,
+    aliases,
   };
 }
 
@@ -118,12 +121,12 @@ namespace Theory {
   export const IONIAN_STEPS = 'W W H W W W H'.split(' ');
 
   export const MODES_CHORDS = {
-    dorian: ['m', 'm', 'M', 'M', 'm', 'o', 'M'],
     ionian: ['M', 'm', 'm', 'M', 'M', 'm', 'o'],
+    dorian: ['m', 'm', 'M', 'M', 'm', 'o', 'M'],
     phrygian: ['m', 'M', 'M', 'm', 'o', 'M', 'm'],
     lydian: ['M', 'M', 'm', 'o', 'M', 'm', 'm'],
-    aeolian: ['m', 'o', 'M', 'm', 'm', 'M', 'M'],
     mixolydian: ['M', 'm', 'o', 'M', 'm', 'm', 'M'],
+    aeolian: ['m', 'o', 'M', 'm', 'm', 'M', 'M'],
     locrian: ['o', 'M', 'm', 'm', 'M', 'M', 'm'],
   };
 
@@ -167,8 +170,7 @@ export function modeToChords(name: string, root: NoteName) {
   return modes.map((ch, i) => Chord([scaleMode[i], ch]).notes);
 }
 
-export function scaleModes(src: ScaleName | ScaleNameTokens) {
-  const scale = Scale(src) as Scale;
-  const chroma = scale['chroma'];
-  return chromaModes(chroma).map(modes => Scale(modes));
+export function scaleModes(src: ScaleInit) {
+  const chroma = Scale(src).chroma;
+  return chromaModes(chroma).map(cmode => Scale(cmode));
 }
