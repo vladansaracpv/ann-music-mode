@@ -92,9 +92,9 @@ function toMode(scaleMode: ModeDefinition): Mode {
   // type ModeDefinition = [ModePcSet, ModeFifths, ModeName, ModeTriad, ModeSeventh, ModeAlias?];
   // [2906, 3, 'aeolian', 'm', 'm7', 'minor'],
 
-  const [modeNum, num, alt, name, triad, seventh, alias] = scaleMode;
+  const [modeNum, setNum, alt, name, triad, seventh, alias] = scaleMode;
   const aliases = alias ? [alias] : [];
-  const chroma = Number(num).toString(2);
+  const chroma = Number(setNum).toString(2);
   const intervals = chromaToIntervals(chroma);
   return {
     aliases,
@@ -105,7 +105,7 @@ function toMode(scaleMode: ModeDefinition): Mode {
     modeNum: +modeNum,
     name,
     normalized: chroma,
-    num,
+    setNum,
     seventh,
     triad,
   };
@@ -147,7 +147,7 @@ export function chordNotes(root: NoteName, chord: string, octaves: number = 1) {
   const note = Note(root);
 
   // Create chord formula for @root@type
-  const formula = CHORD.chordFormula(chord);
+  const formula = CHORD.formula(chord);
 
   // Create array of octaves to map formula onto
   const octs = Array(octaves)
