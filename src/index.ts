@@ -1,8 +1,8 @@
-import { Note, NoteName, NoteMidi } from 'ann-music-note';
-import { Chord, CHORD } from 'ann-music-chord';
 import { Scale, ScaleName, ScaleNameTokens } from 'ann-music-scale';
-import { intervals as chromaToIntervals, EmptySet, PcProps, modes as chromaModes } from 'ann-music-pc';
+import { Chord, CHORD } from 'ann-music-chord';
+import { chromaToIntervals, EmptySet, PcsetProps, modes as chromaModes } from 'ann-music-pc';
 import { IntervalName } from 'ann-music-interval';
+import { Note, NoteName, NoteMidi } from 'ann-music-note';
 
 export type ModeNumber = number;
 export type ModeName = string;
@@ -11,7 +11,7 @@ export type ModeFifths = number;
 export type ModeTriad = string;
 export type ModeSeventh = string;
 export type ModeAlias = string;
-export interface Mode extends PcProps {
+export interface Mode extends PcsetProps {
   readonly intervals: IntervalName[];
   readonly modeNum: number;
   readonly name: string;
